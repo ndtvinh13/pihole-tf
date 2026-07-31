@@ -19,7 +19,7 @@ terraform {
 
 # Terraform provider configuration
 provider "pihole" {
-  url     = var.pihole_host
+  url      = var.pihole_host
   password = var.pihole_password
 }
 
