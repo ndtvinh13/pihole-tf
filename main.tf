@@ -53,11 +53,20 @@ resource "pihole_local_dns" "example3" {
 
 
 
-## ---------- Regex Whitelist ----------
+## ---------- Regex Deny ----------
 resource "pihole_domain" "allow_test_com" {
   domain  = "(^|\\.)examptest\\.com$"
   type    = "deny"
   kind    = "regex"
   enabled = true
   comment = "Allow github.com and *.github.com"
+}
+
+## ---------- Regex Allow ----------
+resource "pihole_domain" "allow_createat229_uk" {
+  domain  = "(^|\\.)createat229\\.uk$"
+  type    = "allow"
+  kind    = "regex"
+  enabled = true
+  comment = "Allow createat229.uk and *.createat229.uk"
 }
