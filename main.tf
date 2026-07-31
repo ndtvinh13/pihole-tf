@@ -11,8 +11,8 @@ terraform {
   # Terraform providers configuration
   required_providers {
     pihole = {
-      source  = "iolave/pihole"
-      version = "~> 0.2.2"
+      source  = "ryanwholey/pihole"
+      version = "~> 2.2.0" # Use the v5-compatible provider
     }
   }
 }
