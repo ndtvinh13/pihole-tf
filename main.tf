@@ -23,7 +23,14 @@ provider "pihole" {
   password = var.pihole_password
 }
 
+
+
 # ---------- Terraform resources configuration ----------
+
+
+
+
+## ---------- Local DNS ----------
 # Test local DNS A record
 resource "pihole_local_dns" "example" {
   hostname = "test.com"
@@ -42,4 +49,15 @@ resource "pihole_local_dns" "example3" {
   ip       = "192.168.1.3"
 }
 
-# Regex
+
+
+
+
+## ---------- Regex Whitelist ----------
+resource "pihole_domain" "allow_test_com" {
+  domain  = "(^|\\.)examptest\\.com$"
+  type    = "deny"
+  kind    = "regex"
+  enabled = true
+  comment = "Allow github.com and *.github.com"
+}
