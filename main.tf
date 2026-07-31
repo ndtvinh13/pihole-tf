@@ -26,13 +26,13 @@ provider "pihole" {
 # ---------- Terraform resources configuration ----------
 # Test local DNS A record
 resource "pihole_dns_record" "example" {
-  hostname = "test.com"
+  domain = "test.com"
   ip       = "192.168.1.1"
 }
 
 # Test2 local DNS A record
 resource "pihole_dns_record" "example2" {
-  hostname = "test2.com"
+  domain = "test2.com"
   ip       = "192.168.1.2"
 }
 
