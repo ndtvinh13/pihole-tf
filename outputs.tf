@@ -1,3 +1,3 @@
-output "pihole_local_dns" {
-  value = pihole_local_dns.example
+output "pihole_dns_record" {
+  value = pihole_dns_record.example
 }
