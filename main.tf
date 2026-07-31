@@ -12,7 +12,7 @@ terraform {
   required_providers {
     pihole = {
       source  = "dklesev/pihole" #"ryanwholey/pihole"
-      version = "~> 1.0" #"~> 0.2.0" # Use the v5-compatible provider
+      version = "~> 1.0"         #"~> 0.2.0" # Use the v5-compatible provider
     }
   }
 }
