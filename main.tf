@@ -63,10 +63,3 @@ resource "pihole_domain" "allow_test_com" {
 }
 
 ## ---------- Regex Allow ----------
-resource "pihole_domain" "allow_createat229_uk" {
-  domain  = "(^|\\.)createat229\\.uk$"
-  type    = "allow"
-  kind    = "regex"
-  enabled = true
-  comment = "Allow createat229.uk and *.createat229.uk"
-}
