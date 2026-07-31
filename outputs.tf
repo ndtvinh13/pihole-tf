@@ -1,15 +1,15 @@
-output "pihole_local_dns" {
-  value = pihole_local_dns.example
+output "createa229_uk" {
+  value = pihole_domain.allow["allow_createa229_uk"]
 }
 
-output "pihole_local_dns2" {
-  value = pihole_local_dns.example2
+output "newrelic_com" {
+  value = pihole_domain.allow["allow_newrelic_com"]
 }
 
-output "pihole_local_dns3" {
-  value = pihole_local_dns.example3
+output "nr_data_net" {
+  value = pihole_domain.allow["allow_nr_data_net"]
 }
 
-output "pihole_domain_allow_test_com" {
-  value = pihole_domain.allow_test_com
+output "github_com" {
+  value = pihole_domain.allow["allow_github_com"]
 }
