@@ -1,0 +1,103 @@
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: 'us-east-1'
+  TF_VAR_pihole_password: ${{ secrets.PIHOLE_PASSWORD }}
+
+jobs:
+  # Validate the code
+  validate:
+    name: 'Format and Validate'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version: 1.10.0
+
+      - name: OpenTofu Format
+        run: tofu fmt -check
+
+      # We skip backend initialization here to make it run blazing fast
+      - name: OpenTofu Init (Local Only)
+        run: tofu init -backend=false
+
+      - name: OpenTofu Validate
+        run: tofu validate
+
+  # Plan the changes
+  plan:
+    name: 'Plan'
+    needs: validate # Waits for the validate stage to pass
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Tailscale Connect
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          #tags: tag:ci-cd
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version: 1.10.0
+
+      - name: OpenTofu Init
+        run: tofu init
+
+      - name: OpenTofu Plan
+        run: tofu plan -out=tfplan
+
+      # Save the plan so the 'apply' job uses the EXACT same calculation
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan
+
+  # Apply the changes
+  apply:
+    name: 'Apply'
+    needs: plan # Waits for the plan stage to finish successfully
+    # Only run this job if code was merged/pushed to the main branch
+    #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Tailscale Connect
+      uses: tailscale/github-action@v3
+      with:
+        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+        tags: tag:ci-cd
+
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v2
+      with:
+        tofu_version: 1.10.0
+
+    - name: OpenTofu Init
+      run: tofu init
+
+    # Retrieve the saved plan from the previous stage
+    - name: Download Plan Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: tfplan
+
+    - name: OpenTofu Apply
+      run: tofu apply -auto-approve tfplan
