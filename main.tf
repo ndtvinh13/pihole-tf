@@ -27,12 +27,12 @@ provider "pihole" {
 # Test local DNS A record
 resource "pihole_dns_record" "example" {
   domain = "test.com"
-  ip       = "192.168.1.1"
+  ip     = "192.168.1.1"
 }
 
 # Test2 local DNS A record
 resource "pihole_dns_record" "example2" {
   domain = "test2.com"
-  ip       = "192.168.1.2"
+  ip     = "192.168.1.2"
 }
 
