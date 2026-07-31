@@ -26,8 +26,7 @@ provider "pihole" {
 # ---------- Terraform resources configuration ----------
 # Test DNS record
 resource "pihole_dns_record" "example" {
-  name    = "test.com"
-  type    = "A"
-  content = "192.168.1.1"
+  domain = "test.com"
+  ip     = "192.168.1.1"
 }
 
