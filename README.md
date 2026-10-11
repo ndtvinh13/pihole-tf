@@ -10,7 +10,7 @@
 
 ## ✨ Key Features
 
-- **Declarative DNS policy** — Centralized allow and deny lists in `allow.tf` and `deny.tf`, with support for `exact` and `regex` rules (including subdomain wildcards via regex).
+- **Declarative DNS policy** — Allow and deny lists in `modules/pihole_domains/allow.tf` and `modules/pihole_domains/deny.tf` (invoked from root `main.tf`). Supports `exact` and `regex` rules (including subdomain wildcards via regex).
 - **Local DNS records** — Optional `pihole_local_dns` resources for static hostname → IP mappings in `main.tf`.
 - **Remote state on S3** — Encrypted state in `us-east-1` with lockfile support for safer concurrent operations.
 - **CI/CD pipeline** — Format check, validate (no backend), plan, and apply using a saved plan artifact so production matches what was reviewed.
@@ -105,7 +105,7 @@ tofu apply -auto-approve tfplan
 
 ### Add an allow or deny rule
 
-Edit the `locals` map in `allow.tf` or `deny.tf`. Use a stable map key (e.g. `allow_example_com`), set `kind` to `"regex"` or `"exact"`, and run plan/apply.
+Edit the `locals` map in `modules/pihole_domains/allow.tf` or `modules/pihole_domains/deny.tf`. Use a stable map key (e.g. `allow_example_com`), set `kind` to `"regex"` or `"exact"`, and run plan/apply.
 
 **Regex (domain + subdomains):**
 

@@ -22,6 +22,10 @@ provider "pihole" {
   password = var.pihole_password
 }
 
+module "domain_lists" {
+  source = "./modules/pihole_domains"
+}
+
 resource "pihole_local_dns" "example" {
   hostname = "test.com"
   ip       = "192.168.1.1"
