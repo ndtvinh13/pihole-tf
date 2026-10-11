@@ -16,6 +16,11 @@ locals {
       kind    = "regex"
       comment = "Deny examptest.com and *.examptest.com"
     }
+    deny_examplenewtest_com = {
+      domain  = "(^|\\.)examplenewtest\\.com$"
+      kind    = "regex"
+      comment = "Deny examplenewtest.com and *.examplenewtest.com"
+    }
   }
 }
 
